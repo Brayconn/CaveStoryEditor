@@ -82,6 +82,7 @@ namespace CaveStoryEditor
             var preset = (StageTablePresets)typeComboBox.SelectedItem;
             Settings.Location.ResetToDefault(preset);
             Settings.Settings.ResetToDefault(preset);
+            UpdateExportButton();
 
             entrySettingsPropertyGrid.SelectedObject = Settings;
         }
