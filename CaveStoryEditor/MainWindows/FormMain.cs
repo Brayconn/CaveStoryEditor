@@ -271,9 +271,9 @@ namespace CaveStoryEditor
         void FillImagesListbox()
         {
             imageListBox.Items.Clear();
-            FillListbox(imageListBox, SearchLocations.Data, Prefixes.None, Extension.Image);
-            FillListbox(imageListBox, SearchLocations.Npc, Prefixes.None, Extension.Image);
-            FillListbox(imageListBox, SearchLocations.Stage, Prefixes.None, Extension.Image);
+            FillListbox(imageListBox, SearchLocations.Data, Prefixes.None, Extension.Image, mod.BaseDataPath);
+            FillListbox(imageListBox, SearchLocations.Npc, Prefixes.None, Extension.Image, mod.BaseDataPath);
+            FillListbox(imageListBox, SearchLocations.Stage, Prefixes.None, Extension.Image, mod.BaseDataPath);
         }
         void FillScriptListBox()
         {
@@ -440,7 +440,7 @@ namespace CaveStoryEditor
 
         private void OpenAttribute_Click(object sender, EventArgs e)
         {
-            manager.OpenAttributeFile(mod.FolderPaths.MakeAbsoluteFromBase(attributeListBox.SelectedItem.ToString()));
+            manager.OpenAttributeFile(mod.FolderPaths.GetFile(SearchLocations.Stage, attributeListBox.SelectedItem.ToString(), Extension.TilesetData));
         }
 
         StageEntry selectedStageTableEntry => mod.StageTable[stageTableDataGridView.SelectedRows[0].Index];
