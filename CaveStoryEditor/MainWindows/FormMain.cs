@@ -7,6 +7,7 @@ using CaveStoryModdingFramework;
 using CaveStoryModdingFramework.Stages;
 using CaveStoryModdingFramework.TSC;
 using CaveStoryModdingFramework.Entities;
+using System.Linq;
 
 namespace CaveStoryEditor
 {
@@ -512,111 +513,9 @@ namespace CaveStoryEditor
                 }
                 else return;
             }
-            var flagList = new SortedDictionary<int, List<string>>();
 
-            //add one flag entry to the list
-            void AddFlag(int flag, string text)
-            {
-                if (!flagList.ContainsKey(flag))
-                    flagList.Add(flag, new List<string>() { text });
-                else
-                    flagList[flag].Add(text);
-            }
-
-            //add flags from a TSC file
-            void AddTSC(string tscPath, bool credits = false)
-            {
-                byte[] input = File.ReadAllBytes(tscPath);
-                if (mod.TSCEncrypted)
-                    Encryptor.DecryptInPlace(input, mod.DefaultKey);
-                var text = mod.TSCEncoding.GetString(input);
-
-                if (!credits)
-                {
-                    for (var index = text.IndexOf('<', 0); index != -1; index = text.IndexOf('<', index + 1))
-                    {
-                        var eve = text.Substring(text.LastIndexOf('#', index), 5);
-                        var cmd = text.Substring(index, 4);
-                        switch (cmd)
-                        {
-                            case "<FL+":
-                            case "<FL-":
-                            case "<FLJ":
-                                AddFlag(FlagConverter.FlagToRealValue(text.Substring(index+4,4),4),
-                                    $"{cmd} {Path.GetFileName(tscPath)} event {eve}");
-                                break;
-                        }
-                    }
-                }
-                else
-                {
-                    var curreve = "N/A";
-                    for(var index = 0; index < text.Length; index++)
-                    {
-                        switch(text[index])
-                        {
-                            //skip text
-                            case '[':
-                                index = text.IndexOf(']', index);
-                                //HACK I hate how this breaks the nice flow the rest of the code has
-                                if (index == -1)
-                                    return;
-                                break;
-                            //l == # in credits
-                            case 'l':
-                                var l = text.Substring(index + 1, 4);
-                                if (char.IsDigit(l[0]) && char.IsDigit(l[1]) && char.IsDigit(l[2]) && char.IsDigit(l[3]))
-                                    curreve = l;
-                                index += 4;
-                                break;
-                            //f == FLJ in credits
-                            case 'f':
-                                AddFlag(FlagConverter.FlagToRealValue(text.Substring(index+1,4), 4),$"<FLJ {Path.GetFileName(tscPath)} event #{curreve}");
-                                index += 4;
-                                break;
-                        }
-                    }
-                }
-            }
-            
-            //Add flags from a PXE file
-            void AddPXE(string pxePath, EntityFlags filter)
-            {
-                var pxe = PXE.Read(pxePath);
-                for (var i = 0; i < pxe.Count; i++)
-                {
-                    var filtered = pxe[i].Bits & filter;
-                    if (pxe[i].Flag != 0 && filtered != 0)
-                        AddFlag(pxe[i].Flag, $"{filtered} {Path.GetFileName(pxePath)} entity {i} ({mod.EntityInfos[pxe[i].Type].Name})");
-                }
-            }
-
-            //global tsc files
-            foreach (var tsc in mod.FolderPaths.EnumerateFiles(SearchLocations.Data, Extension.Script))
-                AddTSC(tsc, tsc.Contains("Credit"));
-
-            //stage table
-            foreach(var entry in mod.StageTable)
-            {
-                if(mod.FolderPaths.TryGetFile(SearchLocations.Stage, entry.Filename, Extension.Script, out string tscPath))
-                    AddTSC(tscPath);
-
-                if(mod.FolderPaths.TryGetFile(SearchLocations.Stage, entry.Filename, Extension.EntityData, out string pxePath))
-                    AddPXE(pxePath, EntityFlags.AppearWhenFlagSet | EntityFlags.HideWhenFlagSet);
-            }
-
-            //save the file
-            using (var sw = new StreamWriter(savePath))
-            {
-                foreach (var evnt in flagList)
-                {
-                    sw.WriteLine("Flag " + evnt.Key);
-                    foreach(var str in evnt.Value)
-                    {
-                        sw.WriteLine("\t" + str);
-                    }
-                }
-            }
+            var flagList = Analysis.GenerateFlagList(mod);
+            Analysis.WriteFlagListToText(flagList.Where(x => x.Flag != 0), savePath);            
         }
 
         private void loadTsclisttxtToolStripMenuItem_Click(object sender, EventArgs e)
