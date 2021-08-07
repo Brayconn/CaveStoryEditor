@@ -504,18 +504,37 @@ namespace CaveStoryEditor
             string savePath = "";
             using(var sfd = new SaveFileDialog()
             {
-                Filter = string.Join("|", "Text Files (*.txt)|*.txt", AllFilesFilter)
+                Filter = string.Join("|", "Text Files (*.txt)|*.txt", "Tab Separated Values (*.tsv)|*.tsv")
             })
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     savePath = sfd.FileName;
+                    var flagList = Analysis.GenerateFlagList(mod);
+                    bool keepTrying = true;
+                    do
+                    {
+                        try
+                        {
+                            switch (sfd.FilterIndex)
+                            {
+                                case 1:
+                                    Analysis.WriteFlagListToText(flagList.Where(x => x.Flag != 0), savePath);
+                                    break;
+                                case 2:
+                                    Analysis.WriteFlagListToTable(flagList, savePath);
+                                    break;
+                            }
+                            keepTrying = false;
+                        }
+                        catch (IOException ioe)
+                        {
+                            keepTrying = MessageBox.Show(ioe.Message + "\n Would you like to retry?", "Error", MessageBoxButtons.RetryCancel) == DialogResult.Retry;
+                        }
+                    }
+                    while (keepTrying);
                 }
-                else return;
             }
-
-            var flagList = Analysis.GenerateFlagList(mod);
-            Analysis.WriteFlagListToText(flagList.Where(x => x.Flag != 0), savePath);            
         }
 
         private void loadTsclisttxtToolStripMenuItem_Click(object sender, EventArgs e)
