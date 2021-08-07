@@ -79,7 +79,6 @@
             this.modSettingsTabPage = new System.Windows.Forms.TabPage();
             this.modPropertyGrid = new CaveStoryEditor.PropertyGridShell();
             this.editorSettingsTabPage = new System.Windows.Forms.TabPage();
-            this.cSBULLETTABLEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.stageTableTabPage.SuspendLayout();
@@ -225,8 +224,7 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadEntityInfotxtToolStripMenuItem,
             this.generateFlagListingToolStripMenuItem,
-            this.loadTsclisttxtToolStripMenuItem,
-            this.cSBULLETTABLEToolStripMenuItem});
+            this.loadTsclisttxtToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -629,13 +627,6 @@
             this.editorSettingsTabPage.Text = "Editor Settings";
             this.editorSettingsTabPage.UseVisualStyleBackColor = true;
             // 
-            // cSBULLETTABLEToolStripMenuItem
-            // 
-            this.cSBULLETTABLEToolStripMenuItem.Name = "cSBULLETTABLEToolStripMenuItem";
-            this.cSBULLETTABLEToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.cSBULLETTABLEToolStripMenuItem.Text = "CS+ BULLET TABLE";
-            this.cSBULLETTABLEToolStripMenuItem.Click += new System.EventHandler(this.cSBULLETTABLEToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -722,7 +713,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem saveBulletTableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportBulletTableToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cSBULLETTABLEToolStripMenuItem;
     }
 }
 
