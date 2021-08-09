@@ -458,11 +458,20 @@ namespace CaveStoryEditor
 
         #region entity history
         Entity entityWithChanges = null;
-        int entityPreviousValue = -1;
+        short entityPreviousValue = -1;
         enum EntityPropertyWatchModes
         {
+            /// <summary>
+            /// Don't add history entries at all
+            /// </summary>
             Ignore,
+            /// <summary>
+            /// Add a history entry for each edit and finalize immediately
+            /// </summary>
             QuickUndo,
+            /// <summary>
+            /// Queue up changes into one big entry and finalize later
+            /// </summary>
             SlowUndo
         }
         EntityPropertyWatchModes entityTrackChanges = EntityPropertyWatchModes.QuickUndo;
@@ -471,15 +480,18 @@ namespace CaveStoryEditor
         void MultiEntityPropertyChanging(object sender, PropertyChangingEventArgs e)
         {
             entityTrackChanges = EntityPropertyWatchModes.SlowUndo;
+            InitUndoAction(() => new EntityPropertiesChanged(e.PropertyName));
         }
 
         void EntityPropertyChanging(object sender, PropertyChangingEventArgs e)
         {
-            if (entityTrackChanges != EntityPropertyWatchModes.Ignore)
-            {
-                InitUndoAction(() => new EntityPropertiesChanged(e.PropertyName));
+            if(entityTrackChanges != EntityPropertyWatchModes.Ignore)
+            { 
+                //for SlowUndo an action should already exist
+                if(entityTrackChanges == EntityPropertyWatchModes.QuickUndo)
+                    InitUndoAction(() => new EntityPropertiesChanged(e.PropertyName));
                 entityWithChanges = (Entity)sender;
-                entityPreviousValue = (int)typeof(Entity).GetProperty(e.PropertyName).GetValue(entityWithChanges);
+                entityPreviousValue = Convert.ToInt16(typeof(Entity).GetProperty(e.PropertyName).GetValue(entityWithChanges));
             }
         }
         void EntityPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -491,7 +503,7 @@ namespace CaveStoryEditor
                 if (entityWithChanges != sender)
                     throw new ArgumentException("An entity failed to send a property changing event");
 
-                var newVal = (int)typeof(Entity).GetProperty(e.PropertyName).GetValue(entityWithChanges);
+                var newVal = Convert.ToInt16(typeof(Entity).GetProperty(e.PropertyName).GetValue(entityWithChanges));
                 var c = (EntityPropertiesChanged)CurrentAction;
                 if (!c.Entities.ContainsKey(entityWithChanges))
                     c.Entities.Add(entityWithChanges, new EntityPropertiesChanged.EntityPropertyChanged(entityPreviousValue, newVal));
@@ -552,7 +564,16 @@ namespace CaveStoryEditor
                 var property = typeof(Entity).GetProperty(epc.Property);
                 foreach (var ent in epc.Entities)
                 {
-                    property.SetValue(ent.Key, undo ? ent.Value.OldValue : ent.Value.NewValue);
+                    switch(epc.Property)
+                    {
+                        case nameof(Entity.Bits):
+                            var f = (EntityFlags)(undo ? ent.Value.OldValue : ent.Value.NewValue);
+                            property.SetValue(ent.Key, f);
+                            break;
+                        default:
+                            property.SetValue(ent.Key, undo ? ent.Value.OldValue : ent.Value.NewValue);
+                            break;
+                    }                    
                 }
                 entityTrackChanges = EntityPropertyWatchModes.QuickUndo;
             }
@@ -799,64 +820,67 @@ namespace CaveStoryEditor
         }
 
         /// <summary>
-        /// Set what entities are being edited in the entityPorpertyGrid
-        /// </summary>
-        /// <param name="ents">Entities to edit</param>
-        private void SetEditingEntity(params Entity[] ents)
-        {
-            if(entityPropertyGrid.SelectedObject is MultiEntityShell mes)
-            {
-                mes.PropertyChanging -= MultiEntityPropertyChanging;
-                mes.PropertyChanged -= MultiEntityPropertyChanged;
-            }
-            if (ents.Length == 0)
-                entityPropertyGrid.SelectedObject = null;
-            else if(ents.Length == 1)
-            {                
-                entityPropertyGrid.SelectedObject = ents[0];
-                entityTrackChanges = EntityPropertyWatchModes.QuickUndo;
-            }
-            else
-            {
-                var multi = new MultiEntityShell(ents);
-                multi.PropertyChanging += MultiEntityPropertyChanging;
-                multi.PropertyChanged += MultiEntityPropertyChanged;
-                entityPropertyGrid.SelectedObject = multi;
-            }
-        }
-        /// <summary>
         /// Sets the given entities as selected. Passing no args will deselect
         /// </summary>
         /// <param name="ents">Entities to select</param>
         private void SelectEntities(params Entity[] ents)
         {
-            //clear everything
+            //clear the internal list
             selectedEntities.Clear();
+            //clear the listbox selections
             listboxCanUpdateSelection = false;
             entityListBox.SelectedItems.Clear();
-            SetEditingEntity();
+
+            //DON'T UNSUBSCRIBE FROM NORMAL ENTITIES
+            //THEY ARE **ALWAYS** BEING WATCHED
+            //unsubsribe from the events on the propertyGridView
+            if (entityPropertyGrid.SelectedObject is MultiEntityShell mes)
+            {
+                mes.PropertyChanging -= MultiEntityPropertyChanging;
+                mes.PropertyChanged -= MultiEntityPropertyChanged;
+            }
+            //and stop editing the current thing
+            entityPropertyGrid.SelectedObject = null;
+
+            void TryToScroll(short? type)
+            {
+                if (type != null && 0 <= type && type < entityListView.Items.Count)
+                {
+                    entityListView.SelectedIndices.Clear();
+                    entityListView.SelectedIndices.Add((int)type);
+                    entityListView.EnsureVisible((int)type);
+                }
+            }
 
             //only select things if there's something to select
-            if(ents.Length > 0)
+            if (ents.Length > 0)
             { 
                 foreach (var e in ents)
                 {
                     selectedEntities.Add(e);
                     entityListBox.SelectedItems.Add(e);
                 }
-                //try to scroll to the selected entity type, if only one is selected
+                
+                //editing one entity
                 if (selectedEntities.Count == 1)
                 {
                     var e = selectedEntities.First();
-                    //can't scroll to an entity that doesn't exist
-                    if (0 <= e.Type && e.Type < entityListView.Items.Count)
-                    {
-                        entityListView.SelectedIndices.Clear();
-                        entityListView.SelectedIndices.Add(e.Type);
-                        entityListView.EnsureVisible(e.Type);
-                    }
+                    TryToScroll(e.Type);
+
+                    //select the entity in the property grid
+                    entityPropertyGrid.SelectedObject = e;
+                    entityTrackChanges = EntityPropertyWatchModes.QuickUndo; //TODO figure out if this is a good spot to put this...
                 }
-                SetEditingEntity(ents);
+                //editing many at once
+                else
+                {
+                    var multi = new MultiEntityShell(ents);
+                    TryToScroll(multi.Type);
+
+                    multi.PropertyChanging += MultiEntityPropertyChanging;
+                    multi.PropertyChanged += MultiEntityPropertyChanged;
+                    entityPropertyGrid.SelectedObject = multi;
+                }
             }
             selectedEntityBoxes.Location = selectedEntityIcons.Location = new Point(0, 0);
             

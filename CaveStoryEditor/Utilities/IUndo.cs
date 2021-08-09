@@ -29,9 +29,9 @@ namespace CaveStoryEditor
     {
         public class EntityPropertyChanged
         {
-            public int OldValue { get; }
-            public int NewValue { get; set; }
-            public EntityPropertyChanged(int old, int @new)
+            public short OldValue { get; }
+            public short NewValue { get; set; }
+            public EntityPropertyChanged(short old, short @new)
             {
                 OldValue = old;
                 NewValue = @new;
