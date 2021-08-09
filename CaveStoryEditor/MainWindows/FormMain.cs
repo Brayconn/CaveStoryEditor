@@ -519,7 +519,7 @@ namespace CaveStoryEditor
                             switch (sfd.FilterIndex)
                             {
                                 case 1:
-                                    Analysis.WriteFlagListToText(flagList.Where(x => x.Flag != 0), savePath);
+                                    Analysis.WriteFlagListToText(flagList.Where(x => x.EntityOversightWarning != 0 || (x.Flag != 0 && x.Type != 0)).ToList(), savePath);
                                     break;
                                 case 2:
                                     Analysis.WriteFlagListToTable(flagList, savePath);
