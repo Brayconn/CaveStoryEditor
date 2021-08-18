@@ -193,8 +193,11 @@ namespace CaveStoryEditor
             stageEntry = entry;
             Cache = cache;
 
-            mapPath = parentMod.FolderPaths.GetFile(SearchLocations.Stage, entry.Filename, Extension.TileData);
-            entityPath = parentMod.FolderPaths.GetFile(SearchLocations.Stage, entry.Filename, Extension.EntityData);
+
+            if (!parentMod.FolderPaths.TryGetFile(SearchLocations.Stage, entry.Filename, Extension.TileData, out mapPath))
+                mapPath = Path.Combine(parentMod.BaseDataPath, parentMod.FolderPaths.StagePaths[0], mapPath);
+            if(!parentMod.FolderPaths.TryGetFile(SearchLocations.Stage, entry.Filename, Extension.EntityData, out entityPath))
+                entityPath = Path.Combine(parentMod.BaseDataPath, parentMod.FolderPaths.StagePaths[0], entityPath);
             tilesetPath = parentMod.FolderPaths.GetFile(SearchLocations.Stage, Prefixes.Tileset, entry.TilesetName, Extension.Image);
             attributePath = parentMod.FolderPaths.GetFile(SearchLocations.Stage, entry.TilesetName, Extension.TilesetData);
 

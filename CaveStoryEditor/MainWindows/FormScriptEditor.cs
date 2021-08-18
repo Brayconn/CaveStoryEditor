@@ -69,7 +69,10 @@ namespace CaveStoryEditor
             {
                 Encrypted = parentMod.TSCEncrypted;
                 UseScriptSource = parentMod.UseScriptSource;
-                Fullpath = parentMod.FolderPaths.GetFile(SearchLocations.Stage, stageEntry.Filename, Extension.Script);
+                if (!parentMod.FolderPaths.TryGetFile(SearchLocations.Stage, stageEntry.Filename, Extension.Script, out var tempPath))
+                    Fullpath = Path.Combine(parentMod.BaseDataPath, parentMod.FolderPaths.StagePaths[0], tempPath);
+                else
+                    Fullpath = tempPath;
                 //if we're in scriptsource mode, we have to get the actual scriptsource path
                 if (UseScriptSource)
                 {
