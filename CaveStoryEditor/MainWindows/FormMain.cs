@@ -553,7 +553,7 @@ namespace CaveStoryEditor
 
         private void saveNPCTableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            npcTableEditor.Save(mod.NpcTablePath);
+            npcTableEditor.Save(mod.NpcTableLocation);
         }
 
         private void exportNPCTableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -566,7 +566,7 @@ namespace CaveStoryEditor
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    npcTableEditor.Save(sfd.FileName);
+                    npcTableEditor.Save(new NPCTableLocation(sfd.FileName));
                 }
             }
         }
@@ -588,6 +588,92 @@ namespace CaveStoryEditor
                 {
                     //HACK not that great that I'm creating a new stage table location hardcoded to one mode
                     BulletTable.Write(mod.BulletTable, new BulletTableLocation(sfd.FileName, BulletTablePresets.csplus));
+                }
+            }
+        }
+
+        private void exportImagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (mod == null)
+                return;
+            //using(var fbd = new FolderBrowserDialog())
+            {
+                //if(fbd.ShowDialog() == DialogResult.OK)
+                {
+                    var selPath = @"D:\Brayconn\Documents\CS MODDING\cave-story-randomizer-master\pre-edited-cs\Images"; //fbd.SelectedPath;
+                    if (MessageBox.Show("This button is very temporary, are you sure you're ready to go?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        //HACK send help
+                        var blackList = new HashSet<int>(EntityList.EntityInfos.Where(x =>
+                                x.Value.Name.Contains("(projectile)") || //self explanitory
+                                x.Value.Name.Contains("carried") || //for curly + puppies
+                                x.Value.Name.Contains("facing away") //for sue/kazuma at pc
+                                )
+                                .Select(x => x.Key))
+                        {
+                            43, //blackboard                            
+                            234, //red flowers
+                            239, //cage bars
+                            216, //debug cat
+                            21, //open chest
+                            168, //boulder
+                            138, //doorway closed doors
+                            349, //statue (broken framerect location)
+                            215, //white sand croc
+                            201, //dead zombie dragon
+                            25, //egg corridor lift
+                            230, //plantation red flowers
+                        };
+
+                        foreach (var stage in mod.StageTable)
+                        {
+                            //open the editor
+                            var editor = manager.OpenTileEditor(stage);
+
+                            //reflection mess
+                            var bits = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+                            object getField(string name)
+                            {
+                                return typeof(FormStageEditor).GetField(name, bits).GetValue(editor);
+                            }
+                            System.Reflection.PropertyInfo getProperty(string name)
+                            {
+                                return typeof(FormStageEditor).GetProperty(name, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                            }
+                            //simulate unchecking the Entity Boxes button
+                            var boxes = (ToolStripMenuItem)getField("entityBoxesToolStripMenuItem");
+                            boxes.PerformClick();
+
+                            //get all entities and filter it to just the ones we want to delete
+                            var ents = ((List<Entity>)getField("entities"));
+                            var badEnts = ents.Where(x => blackList.Contains(x.Type)).ToArray();
+
+                            if (badEnts.Length > 0)
+                            {
+                                //select and delete the bad entities
+                                typeof(FormStageEditor).GetMethod("SelectEntities", bits, null, new[] { typeof(Entity[]) }, null)
+                                    .Invoke(editor, new[] { badEnts });
+                                typeof(FormStageEditor).GetMethod("DeleteSelectedEntities", bits)
+                                    .Invoke(editor, Array.Empty<object>());
+                            }
+                            //force disable the mouse overlay since apparently that's on?
+                            var mouseO = (LayeredPictureBox.Layer<System.Drawing.Image>)getField("mouseOverlay");
+                            mouseO.Shown = false;
+
+                            //force the editor to think it has no unsaved changes (so it doesn't complain when I close it)
+                            var unsaved = getProperty("UnsavedEdits");
+                            unsaved.SetValue(editor, false);
+                            
+                            //generate output path
+                            var path = Path.Combine(selPath, stage.Filename + ".png");
+
+                            //get the map display and save it
+                            var pb = (LayeredPictureBox.LayeredPictureBox)getField("mapLayeredPictureBox");
+                            pb.Flatten(1).Save(path, System.Drawing.Imaging.ImageFormat.Png);
+
+                            editor.Close();
+                        }
+                    }
                 }
             }
         }

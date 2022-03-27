@@ -424,9 +424,9 @@ namespace CaveStoryEditor
         }
         #endregion
 
-        public void Save(string path)
+        public void Save(NPCTableLocation location)
         {
-            NPCTable.Save(propertyGridListBox1.List, path);
+            NPCTable.Save(propertyGridListBox1.List, location);
             HasUnsavedChanges = false;
         }
     }
