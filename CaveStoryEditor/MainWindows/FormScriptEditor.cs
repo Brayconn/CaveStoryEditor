@@ -33,7 +33,7 @@ namespace CaveStoryEditor
             }
         }
         readonly Mod parentMod;
-        public StageEntry stageEntry { get; private set; } = null;
+        public StageTableEntry stageEntry { get; private set; } = null;
         public string Fullpath { get; private set; } = "";
 
         bool UseScriptSource;
@@ -112,7 +112,7 @@ namespace CaveStoryEditor
 
             InitializeComponent();
         }
-        public FormScriptEditor(Mod m, StageEntry entry) : this(m)
+        public FormScriptEditor(Mod m, StageTableEntry entry) : this(m)
         {
             Encrypted = parentMod.TSCEncrypted;
             UseScriptSource = parentMod.UseScriptSource;

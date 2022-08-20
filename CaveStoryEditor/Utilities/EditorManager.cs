@@ -84,7 +84,7 @@ namespace CaveStoryEditor
             clearList(AttributeEditors);
         }
 
-        public FormStageEditor OpenTileEditor(StageEntry entry)
+        public FormStageEditor OpenTileEditor(StageTableEntry entry)
         {
             FormStageEditor editor = TileEditors.Find(x => x.stageEntry == entry);
             //if not, create it
@@ -100,7 +100,7 @@ namespace CaveStoryEditor
             return editor;
         }
 
-        public void OpenScriptEditor(StageEntry entry)
+        public void OpenScriptEditor(StageTableEntry entry)
         {
             FormScriptEditor editor = ScriptEditors.Find(x => x.stageEntry == entry);
             //if not, create it

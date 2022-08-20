@@ -86,41 +86,41 @@ namespace CaveStoryEditor
         readonly Bitmap tileTypes;
 
         public string Filename => stageEntry.Filename;
-        public StageEntry stageEntry { get; private set; }
+        public StageTableEntry stageEntry { get; private set; }
 
         void UnlinkEntry()
         {
             stageEntry.PropertyChanged -= Entry_PropertyChanged;
-            stageEntry = (StageEntry)stageEntry.Clone();
+            stageEntry = (StageTableEntry)stageEntry.Clone();
         }
 
         private void Entry_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case nameof(StageEntry.TilesetName):
+                case nameof(StageTableEntry.TilesetName):
                     
                     break;
-                case nameof(StageEntry.Filename):
+                case nameof(StageTableEntry.Filename):
                     
                     break;
-                case nameof(StageEntry.BackgroundType):
+                case nameof(StageTableEntry.BackgroundType):
                     
                     break;
-                case nameof(StageEntry.BackgroundName):
+                case nameof(StageTableEntry.BackgroundName):
                     
                     break;
-                case nameof(StageEntry.Spritesheet1):
+                case nameof(StageTableEntry.Spritesheet1):
                     
                     break;
-                case nameof(StageEntry.Spritesheet2):
+                case nameof(StageTableEntry.Spritesheet2):
                     
                     break;
-                case nameof(StageEntry.BossNumber):
+                case nameof(StageTableEntry.BossNumber):
                     
                     break;
                 //No check for Japanese Name since we wouldn't need to do anything
-                case nameof(StageEntry.MapName):
+                case nameof(StageTableEntry.MapName):
 
                     break;
             }
@@ -185,7 +185,7 @@ namespace CaveStoryEditor
             }
         }
 
-        public FormStageEditor(Mod m, SpriteCache cache, IDictionary<WinFormsKeybinds.KeyInput, string> keybinds, StageEntry entry)
+        public FormStageEditor(Mod m, SpriteCache cache, IDictionary<WinFormsKeybinds.KeyInput, string> keybinds, StageTableEntry entry)
         {
             //everything needs this stuff
             parentMod = m;

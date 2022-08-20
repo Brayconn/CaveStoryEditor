@@ -10,19 +10,19 @@ namespace CaveStoryEditor
 {
     public partial class FormStageTableExporter : Form
     {
-        IList<StageEntry> Table { get; }
+        IList<StageTableEntry> Table { get; }
         private class Container
         {
             [TypeConverter(typeof(ExpandableObjectConverter))]
             public StageTableLocation Location { get; } = new StageTableLocation("");
             [TypeConverter(typeof(ExpandableObjectConverter))]
-            public StageEntrySettings Settings { get; } = new StageEntrySettings();
+            public StageTableEntrySettings Settings { get; } = new StageTableEntrySettings();
             [TypeConverter(typeof(ExpandableObjectConverter))]
             public StageTableReferences References { get; } = new StageTableReferences();
         }
         Container Settings { get; } = new Container();
 
-        public FormStageTableExporter(IList<StageEntry> table)
+        public FormStageTableExporter(IList<StageTableEntry> table)
         {
             Table = table;
             InitializeComponent();

@@ -63,20 +63,20 @@ namespace CaveStoryEditor
                 });
             }
             //adding the actual content
-            AddColumn("Map Name", nameof(StageEntry.MapName));
+            AddColumn("Map Name", nameof(StageTableEntry.MapName));
             //TODO need to add/remove Japanese Name column as needed
             if (mod.StageTablePreset == StageTablePresets.stagetbl)
-                AddColumn("Japanese Name", nameof(StageEntry.JapaneseName));
-            AddColumn("Tileset", nameof(StageEntry.TilesetName));
-            AddColumn("Filename", nameof(StageEntry.Filename));
+                AddColumn("Japanese Name", nameof(StageTableEntry.JapaneseName));
+            AddColumn("Tileset", nameof(StageTableEntry.TilesetName));
+            AddColumn("Filename", nameof(StageTableEntry.Filename));
 
-            AddComboBoxColumn("Background Type", nameof(StageEntry.BackgroundType), mod.BackgroundTypes);
+            AddComboBoxColumn("Background Type", nameof(StageTableEntry.BackgroundType), mod.BackgroundTypes);
             
-            AddColumn("Background Name", nameof(StageEntry.BackgroundName));
-            AddColumn("Spritesheet 1", nameof(StageEntry.Spritesheet1));
-            AddColumn("Spritesheet 2", nameof(StageEntry.Spritesheet2));
+            AddColumn("Background Name", nameof(StageTableEntry.BackgroundName));
+            AddColumn("Spritesheet 1", nameof(StageTableEntry.Spritesheet1));
+            AddColumn("Spritesheet 2", nameof(StageTableEntry.Spritesheet2));
             
-            AddComboBoxColumn("Boss Number", nameof(StageEntry.BossNumber), mod.BossNumbers);
+            AddComboBoxColumn("Boss Number", nameof(StageTableEntry.BossNumber), mod.BossNumbers);
         }
 
         private void StageTableDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -84,10 +84,10 @@ namespace CaveStoryEditor
             var cell = stageTableDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
             switch (cell.OwningColumn.Name)
             {
-                case nameof(StageEntry.BackgroundType) + ColumnPostFix:
+                case nameof(StageTableEntry.BackgroundType) + ColumnPostFix:
                     e.Cancel = true;
                     break;
-                case nameof(StageEntry.BossNumber) + ColumnPostFix:
+                case nameof(StageTableEntry.BossNumber) + ColumnPostFix:
                     e.Cancel = true;
                     break;
             }
@@ -106,19 +106,19 @@ namespace CaveStoryEditor
                     case IndexColumnName:
                         e.Value = e.RowIndex;
                         break;
-                    case nameof(StageEntry.BackgroundType) + ColumnPostFix:
+                    case nameof(StageTableEntry.BackgroundType) + ColumnPostFix:
                         e.Value = $"{mod.StageTable[e.RowIndex].BackgroundType} - {e.Value ?? "???"}";
                         break;
-                    case nameof(StageEntry.BossNumber) + ColumnPostFix:
+                    case nameof(StageTableEntry.BossNumber) + ColumnPostFix:
                         e.Value = $"{mod.StageTable[e.RowIndex].BossNumber} - {e.Value ?? "???"}";
                         break;
                 }
             }
         }
 
-        StageEntry SelectedStageTableEntry
+        StageTableEntry SelectedStageTableEntry
         {
-            get => stageTablePropertyGrid.SelectedObject as StageEntry;
+            get => stageTablePropertyGrid.SelectedObject as StageTableEntry;
             set
             {
                 if(value != SelectedStageTableEntry)
@@ -167,7 +167,7 @@ namespace CaveStoryEditor
 
         private void insertButton_Click(object sender, EventArgs e)
         {
-            mod.StageTable.Insert(stageTableDataGridView.SelectedRows[0].Index, new StageEntry());
+            mod.StageTable.Insert(stageTableDataGridView.SelectedRows[0].Index, new StageTableEntry());
             stageTableBinding.ResetBindings(false);
             UpdateCanAddStageTableEntries();
             StageTableUnsaved = true;

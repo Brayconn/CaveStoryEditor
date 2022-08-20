@@ -52,7 +52,7 @@ namespace CaveStoryEditor
             generateFlagListingToolStripMenuItem.Enabled = true;
 
             //stage table
-            stageTableBinding = new BindingSource(new BindingList<StageEntry>(mod.StageTable), null)
+            stageTableBinding = new BindingSource(new BindingList<StageTableEntry>(mod.StageTable), null)
             {
                 
             };
@@ -444,7 +444,7 @@ namespace CaveStoryEditor
             manager.OpenAttributeFile(mod.FolderPaths.GetFile(SearchLocations.Stage, attributeListBox.SelectedItem.ToString(), Extension.TilesetData));
         }
 
-        StageEntry selectedStageTableEntry => mod.StageTable[stageTableDataGridView.SelectedRows[0].Index];
+        StageTableEntry selectedStageTableEntry => mod.StageTable[stageTableDataGridView.SelectedRows[0].Index];
 
         private void openTilesButton_Click(object sender, EventArgs e)
         {
@@ -561,7 +561,7 @@ namespace CaveStoryEditor
             using (var sfd = new SaveFileDialog()
             {
                 Title = "Choose a location...",
-                Filter = string.Join("|", NPCTable.NPCTBLFilter, AllFilesFilter)
+                Filter = string.Join("|", NPCTableLocation.NPCTBLFilter, AllFilesFilter)
             })
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
@@ -573,7 +573,7 @@ namespace CaveStoryEditor
 
         private void saveBulletTableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BulletTable.Write(mod.BulletTable, mod.BulletTableLocation);
+            BulletTableLocation.Write(mod.BulletTable, mod.BulletTableLocation);
         }
 
         private void exportBulletTableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -581,13 +581,13 @@ namespace CaveStoryEditor
             using(var sfd = new SaveFileDialog()
             {
                 Title = "Choose a location...",
-                Filter = string.Join("|", BulletTable.BulletTableFilter, AllFilesFilter)
+                Filter = string.Join("|", BulletTableLocation.BulletTableFilter, AllFilesFilter)
             })
             {
                 if(sfd.ShowDialog() == DialogResult.OK)
                 {
                     //HACK not that great that I'm creating a new stage table location hardcoded to one mode
-                    BulletTable.Write(mod.BulletTable, new BulletTableLocation(sfd.FileName, BulletTablePresets.csplus));
+                    BulletTableLocation.Write(mod.BulletTable, new BulletTableLocation(sfd.FileName, BulletTablePresets.csplus));
                 }
             }
         }

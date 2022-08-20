@@ -426,7 +426,7 @@ namespace CaveStoryEditor
 
         public void Save(NPCTableLocation location)
         {
-            NPCTable.Save(propertyGridListBox1.List, location);
+            NPCTableLocation.Save(propertyGridListBox1.List, location);
             HasUnsavedChanges = false;
         }
     }
