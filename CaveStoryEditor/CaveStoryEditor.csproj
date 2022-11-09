@@ -1,251 +1,217 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8150F0E5-0B43-4B09-BFFC-4D0E1F2EFABC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CaveStoryEditor</RootNamespace>
-    <AssemblyName>CaveStoryEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
+    <AssemblyTitle>CaveStoryEditor</AssemblyTitle>
+    <Product>CaveStoryEditor</Product>
+    <Copyright>Copyright ©  2020</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="jacobslusser.ScintillaNET" Version="3.6.3" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\BitEditor.cs">
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Controls\BitEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\BitEditor.Designer.cs">
+    <Compile Update="Controls\BitEditor.Designer.cs">
       <DependentUpon>BitEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BulletTableEditor.cs">
+    <Compile Update="Controls\BulletTableEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\BulletTableEditor.Designer.cs">
+    <Compile Update="Controls\BulletTableEditor.Designer.cs">
       <DependentUpon>BulletTableEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BulletTablePropertyGridListBox.cs">
+    <Compile Update="Controls\BulletTablePropertyGridListBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\BulletTablePropertyGridListBox.Designer.cs">
+    <Compile Update="Controls\BulletTablePropertyGridListBox.Designer.cs">
       <DependentUpon>BulletTablePropertyGridListBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor.Designer.cs">
+    <Compile Update="Editor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Editor.settings</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\EditorManager.cs" />
-    <Compile Include="EditorSettings.cs" />
-    <Compile Include="Utilities\EnumColumn.cs" />
-    <Compile Include="Controls\FlagScratchPad.cs">
+    <Compile Update="Controls\FlagScratchPad.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\FlagScratchPad.Designer.cs">
+    <Compile Update="Controls\FlagScratchPad.Designer.cs">
       <DependentUpon>FlagScratchPad.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindows\FormAttributeEditor.cs">
+    <Compile Update="MainWindows\FormAttributeEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindows\FormAttributeEditor.designer.cs">
+    <Compile Update="MainWindows\FormAttributeEditor.designer.cs">
       <DependentUpon>FormAttributeEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="DialogWindows\FormGoto.cs">
+    <Compile Update="DialogWindows\FormGoto.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogWindows\FormGoto.Designer.cs">
+    <Compile Update="DialogWindows\FormGoto.Designer.cs">
       <DependentUpon>FormGoto.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindows\FormMain.cs">
+    <Compile Update="MainWindows\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindows\FormMain.Designer.cs">
+    <Compile Update="MainWindows\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindows\FormMain_StageTable.cs">
+    <Compile Update="MainWindows\FormMain_StageTable.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormOpenStageFiles.cs">
+    <Compile Update="FormOpenStageFiles.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormOpenStageFiles.Designer.cs">
+    <Compile Update="FormOpenStageFiles.Designer.cs">
       <DependentUpon>FormOpenStageFiles.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindows\FormScriptEditor.cs">
+    <Compile Update="MainWindows\FormScriptEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindows\FormScriptEditor.Designer.cs">
+    <Compile Update="MainWindows\FormScriptEditor.Designer.cs">
       <DependentUpon>FormScriptEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindows\FormStageEditor.cs">
+    <Compile Update="MainWindows\FormStageEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindows\FormStageEditor.designer.cs">
+    <Compile Update="MainWindows\FormStageEditor.designer.cs">
       <DependentUpon>FormStageEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="DialogWindows\FormStageTableExporter.cs">
+    <Compile Update="DialogWindows\FormStageTableExporter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogWindows\FormStageTableExporter.Designer.cs">
+    <Compile Update="DialogWindows\FormStageTableExporter.Designer.cs">
       <DependentUpon>FormStageTableExporter.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\HitboxPreview.cs">
+    <Compile Update="Controls\HitboxPreview.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\HitboxPreview.Designer.cs">
+    <Compile Update="Controls\HitboxPreview.Designer.cs">
       <DependentUpon>HitboxPreview.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ViewboxPreview.cs">
+    <Compile Update="Controls\ViewboxPreview.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ViewboxPreview.Designer.cs">
+    <Compile Update="Controls\ViewboxPreview.Designer.cs">
       <DependentUpon>ViewboxPreview.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\IUndo.cs" />
-    <Compile Include="MainWindows\FormStageEditor_MapDisplay.cs">
+    <Compile Update="MainWindows\FormStageEditor_MapDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Keybinds.Designer.cs">
+    <Compile Update="Keybinds.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Keybinds.settings</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MapResizeControl.cs">
+    <Compile Update="Controls\MapResizeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\MapResizeControl.designer.cs">
+    <Compile Update="Controls\MapResizeControl.designer.cs">
       <DependentUpon>MapResizeControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\NPCTableEditor.cs">
+    <Compile Update="Controls\NPCTableEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\NPCTableEditor.Designer.cs">
+    <Compile Update="Controls\NPCTableEditor.Designer.cs">
       <DependentUpon>NPCTableEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\NPCTablePropertyGridListBox.cs">
+    <Compile Update="Controls\NPCTablePropertyGridListBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\NPCTablePropertyGridListBox.Designer.cs">
+    <Compile Update="Controls\NPCTablePropertyGridListBox.Designer.cs">
       <DependentUpon>NPCTablePropertyGridListBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Patcher.Designer.cs">
+    <Compile Update="Patcher.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Patcher.settings</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\PropertyGridListBox.cs">
+    <Compile Update="Controls\PropertyGridListBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PropertyGridListBox.Designer.cs">
+    <Compile Update="Controls\PropertyGridListBox.Designer.cs">
       <DependentUpon>PropertyGridListBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PropertyGridShell.cs">
+    <Compile Update="Controls\PropertyGridShell.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Utilities\ScintillaExtensions.cs" />
-    <Compile Include="Utilities\SharedGraphics.cs" />
-    <Compile Include="MainWindows\FormStageEditor_TilesetDisplay.cs">
+    <Compile Update="MainWindows\FormStageEditor_TilesetDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI.Designer.cs">
+    <Compile Update="UI.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>UI.settings</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Controls\BitEditor.resx">
+    <EmbeddedResource Update="Controls\BitEditor.resx">
       <DependentUpon>BitEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\BulletTableEditor.resx">
+    <EmbeddedResource Update="Controls\BulletTableEditor.resx">
       <DependentUpon>BulletTableEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\FlagScratchPad.resx">
+    <EmbeddedResource Update="Controls\FlagScratchPad.resx">
       <DependentUpon>FlagScratchPad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainWindows\FormAttributeEditor.resx">
+    <EmbeddedResource Update="MainWindows\FormAttributeEditor.resx">
       <DependentUpon>FormAttributeEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DialogWindows\FormGoto.resx">
+    <EmbeddedResource Update="DialogWindows\FormGoto.resx">
       <DependentUpon>FormGoto.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainWindows\FormMain.resx">
+    <EmbeddedResource Update="MainWindows\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormOpenStageFiles.resx">
+    <EmbeddedResource Update="FormOpenStageFiles.resx">
       <DependentUpon>FormOpenStageFiles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainWindows\FormScriptEditor.resx">
+    <EmbeddedResource Update="MainWindows\FormScriptEditor.resx">
       <DependentUpon>FormScriptEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainWindows\FormStageEditor.resx">
+    <EmbeddedResource Update="MainWindows\FormStageEditor.resx">
       <DependentUpon>FormStageEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DialogWindows\FormStageTableExporter.resx">
+    <EmbeddedResource Update="DialogWindows\FormStageTableExporter.resx">
       <DependentUpon>FormStageTableExporter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\HitboxPreview.resx">
+    <EmbeddedResource Update="Controls\HitboxPreview.resx">
       <DependentUpon>HitboxPreview.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ViewboxPreview.resx">
+    <EmbeddedResource Update="Controls\ViewboxPreview.resx">
       <DependentUpon>ViewboxPreview.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\MapResizeControl.resx">
+    <EmbeddedResource Update="Controls\MapResizeControl.resx">
       <DependentUpon>MapResizeControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\NPCTableEditor.resx">
+    <EmbeddedResource Update="Controls\NPCTableEditor.resx">
       <DependentUpon>NPCTableEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Controls\PropertyGridListBox.resx">
+    <EmbeddedResource Update="Controls\PropertyGridListBox.resx">
       <DependentUpon>PropertyGridListBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Editor.settings">
@@ -256,7 +222,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Keybinds.Designer.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
     <None Include="Patcher.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Patcher.Designer.cs</LastGenOutput>
@@ -265,7 +230,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -276,39 +241,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\LayeredPictureBox\LayeredPictureBox\LayeredPictureBox.csproj">
-      <Project>{2BCB2AFA-27DB-4B92-83F8-02B859F1E1F4}</Project>
-      <Name>LayeredPictureBox</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LocalizeableComponentModel\LocalizeableComponentModel\LocalizeableComponentModel.csproj">
-      <Project>{ccf06d34-860e-4f13-bb3c-e46e8fa955a2}</Project>
-      <Name>LocalizeableComponentModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PETools\PETools\PETools.csproj">
-      <Project>{B3B5FCAC-3F15-4839-BB20-81DDF6047794}</Project>
-      <Name>PETools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PixelModdingFramework\PixelModdingFramework\PixelModdingFramework.csproj">
-      <Project>{4582ae75-d1e5-4228-bd5f-f9389da86ea4}</Project>
-      <Name>PixelModdingFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WinFormsKeybinds\WinFormsKeybinds\WinFormsKeybinds.csproj">
-      <Project>{01d4486a-d72a-421d-842f-ab35ef1cdfbb}</Project>
-      <Name>WinFormsKeybinds</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CaveStoryModdingFramework\CaveStoryModdingFramework.csproj">
-      <Project>{00c92507-872a-47c4-a632-6946b0f0935e}</Project>
-      <Name>CaveStoryModdingFramework</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\LayeredPictureBox\LayeredPictureBox\LayeredPictureBox.csproj" />
+    <ProjectReference Include="..\..\LocalizeableComponentModel\LocalizeableComponentModel\LocalizeableComponentModel.csproj" />
+    <ProjectReference Include="..\..\PETools\PETools\PETools.csproj" />
+    <ProjectReference Include="..\..\PixelModdingFramework\PixelModdingFramework\PixelModdingFramework.csproj" />
+    <ProjectReference Include="..\..\WinFormsKeybinds\WinFormsKeybinds\WinFormsKeybinds.csproj" />
+    <ProjectReference Include="..\..\CaveStoryModdingFramework\CaveStoryModdingFramework\CaveStoryModdingFramework.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="tiletypes.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

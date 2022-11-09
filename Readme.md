@@ -1,15 +1,34 @@
-# The King's Table
-A new Cave Story editor, designed to work with everything that came before, and everything that ever could happen after.
+# The King's Table (Legacy)
+This was the original version of The King's Table, made in C# using Winforms.
 
-Please excuse the mess, this editor is only *just* in a state where you can use it to edit all of CS, so it's very liable to crashing, and is missing a lot of features.
+This version has been abandoned in favor of [the Avalonia version](https://github.com/Brayconn/TheKingsTable) for performance reasons.
+Turns out that Mono's Winforms support works... but it's *painfully* slow.
+Heck, even on Windows it lags when resizing the program.
 
-In the future there will be more of a description here, but for now, I'm assuming you're here to build this for yourself.
+Also, the included appveyor config is broken.
+Shouldn't take too much to fix it, but there's bigger build issues to solve first.
+
+
+# Building
+In the process of migrating to the Avalonia version, I horribly broke all the libraries this version of the program depends on.
+At some point I will probably fix this version of the program to work with those new APIs, but that's an *extremely* low priority, so right now you're kinda out of luck...
+
+In theory the project is just a regular Visual Studio solution file though, so once the API is fixed it should build pretty normally.
+
+That said, it has a LOT of other projects you'll need to download too
+
+- [LayeredPictureBox](https://github.com/Brayconn/LayeredPictureBox)
+- [CaveStoryModdingFramework](https://github.com/Brayconn/CaveStoryModdingFramework)
+- [PETools](https://github.com/Brayconn/PETools) 
+  - Make sure you use my overhaul, and not the original broken/super old parent repo.
+- [LocalizeableComponentModel](https://github.com/Brayconn/LocalizeableComponentModel)
+- [WinFormsKeybinds](https://github.com/Brayconn/WinFormsKeybinds)
 
 # Running
 
 ## Windows
 
-Check the ~~releases~~ [Appveyor](https://ci.appveyor.com/api/projects/brayconn/thekingstable/artifacts/Release.zip) page and download that exe!
+It's just an exe...
 
 ## Mac
 
@@ -26,19 +45,3 @@ It's still the same exe, just run it using mono.
 If you aren't using the `mono-complete` package,
 make sure you at least have `mono-locale-extras`,
 otherwise TKT will crash because it can't find Shift-JIS.
-
-# Building
-It's just a regular VS 2019 file, it should build pretty normally.
-
-Current Target is .NET Framework 4.8, but in the future this may lower to 4.6, and add an option for building with .NET 5.
-
-That said, it has a LOT of other projects you'll need to download too
-
-- [LayeredPictureBox](https://github.com/Brayconn/LayeredPictureBox)
-- [PixelModdingFramework](https://github.com/Brayconn/PixelModdingFramework)
-- [PETools](https://github.com/Brayconn/PETools) 
-  - Make sure you use my overhaul, and not the original broken/super old parent repo.
-- [LocalizeableComponentModel](https://github.com/Brayconn/LocalizeableComponentModel)
-- [WinFormsKeybinds](https://github.com/Brayconn/WinFormsKeybinds)
-
-I hope to reduce the amount of libraries you need to download in the future.
